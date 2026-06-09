@@ -21,3 +21,11 @@ class Match:
         self.completed = True
 
 
+    def set_result(self, result):
+        if result == 'win':
+            self.points += 1.0
+            self.winner = True
+        elif result == 'tie':
+            self.points += 0.5
+            self.tie = True
+
