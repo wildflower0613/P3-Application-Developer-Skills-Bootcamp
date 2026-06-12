@@ -1,6 +1,7 @@
 import random
-from .matches import Match
-from .rounds import Round
+import backtrack
+from models.matches import Match
+from models.rounds import Round
 
 class Tournament:
     def __init__(self, name, venue, start_date, end_date, number_of_rounds, current_round, completed):
@@ -23,7 +24,6 @@ class Tournament:
  # Rounds amd Matchmaking
     def get_points(self, player):
         points = 0.0
-        for round_ in self.rounds:
             for match in round_.matches:
                 if not match.completed :
                     continue
@@ -33,34 +33,47 @@ class Tournament:
                     points += 1.0
         return points
 
+# Players for 1st round
+
     def pair_players_for_first_round(self, players):
-        for Round(1) in self.rounds:
-        random.shuffle(players)
+        round_1= Round(1)
+        for round_1 in self.rounds:
+            random.shuffle(players)
+            print (players.match)
 
-    def pairing_for_swiss_rounds(self, points, players, history):
-        self.history = []
-        players_to_pair.sort(key=lambda p: points[p], reverse=True)
+# Players for subsequent rounds
+    def countPlayers(self):
+        return len(self.players)
 
-        def backtrack(remaining_players):
-            if not remaining_players:
-                return []
+    def get_ranks(self):
+        return sorted(self.players, key=self.get_points, reverse=True)
 
-            p1 = remaining_players[0]
-            for i in range(1, len(remaining_players)):
-                p2 = remaining_players[i]
+    def get_played_pairs(self):
+        pairs = set()
+        for round_ in self.rounds:
+            for match in round_.matches:
+                pairs.add(frozenset(match.players))
+        return pairs
 
-                if p2 not in history.get(p1, set ()):
+    def swissPairings(self):
+        sorted_players = self.get_ranks()
+        played_pairs = self.get_played_pairs()
 
-                    matchup = (p1, p2)
 
-                    next_remaining = remaining[1:i] + remaining[i + 1:]
-                    result = backtrack(next_remaining)
+        numPlayers = countPlayers(name)
+        if numPlayers % 2 != 0:
+            bye = ranks.pop(checkByes(name, ranks, -1))
+            reportBye(name, bye[0])
 
-                    if result is not None:
-                        return [matchup] + result
-        return None
-    pairings = backtrack(players_to_pair)
-    return pairings
+        while len(ranks) > 1:
+            validMatch = checkPairs(name, ranks, 0, 1)
+            player1 = ranks.pop(0)
+            player2 = ranks.pop(validMatch - 1)
+            pairs.append((player1[0], player1[1], player2[0], player2[1]))
+
+        return pairs
+
+
 
 
 
