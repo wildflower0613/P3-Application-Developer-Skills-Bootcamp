@@ -1,7 +1,7 @@
 import random
-import backtrack
-from models.matches import Match
 from models.rounds import Round
+from models.matches import Match
+from models.player import Player
 
 class Tournament:
     def __init__(self, name, venue, start_date, end_date, number_of_rounds, current_round, completed):
@@ -24,6 +24,7 @@ class Tournament:
  # Rounds amd Matchmaking
     def get_points(self, player):
         points = 0.0
+        for round_ in self.rounds:
             for match in round_.matches:
                 if not match.completed :
                     continue
@@ -35,11 +36,16 @@ class Tournament:
 
 # Players for 1st round
 
-    def pair_players_for_first_round(self, players):
-        round_1= Round(1)
-        for round_1 in self.rounds:
-            random.shuffle(players)
-            print (players.match)
+    def pair_players_for_first_round(self):
+        shuffled = self.players.copy()
+        random.shuffle(shuffled)
+        pairs = list(zip(shuffled[::2], shuffled[1::2]))
+        round_ = Round(1)
+        for pair in pairs:
+            match = Match([pair[0], pair[1]])
+            round_.add_match(match)
+        self.rounds.append(round_)
+        self.current_round = 1
 
 # Players for subsequent rounds
     def countPlayers(self):
@@ -55,39 +61,15 @@ class Tournament:
                 pairs.add(frozenset(match.players))
         return pairs
 
-    def swissPairings(self):
-        sorted_players = self.get_ranks()
-        played_pairs = self.get_played_pairs()
+    def get_players_for_next_rounds(self):
+        sort_players = sorted(self, key=self.get_ranks, reverse=True)
+        new_matches = sort_players
+        for round_ in self.rounds:
+            round_.add_match(new_matches)
+        return new_matches
 
+#advance rounds (have round update automatically in tournament
 
-        numPlayers = countPlayers(name)
-        if numPlayers % 2 != 0:
-            bye = ranks.pop(checkByes(name, ranks, -1))
-            reportBye(name, bye[0])
-
-        while len(ranks) > 1:
-            validMatch = checkPairs(name, ranks, 0, 1)
-            player1 = ranks.pop(0)
-            player2 = ranks.pop(validMatch - 1)
-            pairs.append((player1[0], player1[1], player2[0], player2[1]))
-
-        return pairs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def advance_round(self):
+        self.current_round += 1
+        return current_round

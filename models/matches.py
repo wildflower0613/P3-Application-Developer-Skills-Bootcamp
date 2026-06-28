@@ -1,6 +1,6 @@
 class Match:
     def __init__(self, players, completed = False, winner = None, tie = False):
-        self.players = players
+        self.players = list(players)
         self.completed = completed
         self.winner = winner
         self.tie = tie
