@@ -7,6 +7,8 @@ alice = Player("alice", "alice@test.com", "AL12345", "01-01-1990")
 bob = Player("bob", "t@y.vu", "NG39713", "29-08-1957")
 sarah = Player("sarah", "hortmelvin@example.net", "JW63361", "23-01-1921")
 erick = Player(" erick",  "zbyrd@example.net",  "QZ98880", "05-08-1916")
+teresa = Player("teresa", "teresa@test.com", "TL13345", "03-09-1993")
+alex = Player("alex", "alex12@test.com","AX88901", "12-04-1992" )
 
 Spring_Tournament = Tournament("Spring_Open", "Chestfall", "06-12-2026", "06-13-2026", 4, 0, False)
 
@@ -51,7 +53,7 @@ for pair in Spring_Tournament.get_played_pairs():
 
 Summer_Tournament = Tournament("Spring_Open", "Chestfall", "06-12-2026", "06-13-2026", 4, 0, False)
 
-for player in [alice, bob, sarah, erick]:
+for player in [alice, bob, sarah, erick, teresa, alex]:
     Summer_Tournament.register_players(player)
 Summer_Tournament.pair_players_for_first_round()
 
@@ -59,3 +61,38 @@ print("Round generation")
 
 for match in Summer_Tournament.rounds[0].matches:
     print(match)
+
+
+round1 = Round(0)
+
+match3 = Match([alice, bob])
+match4 = Match([sarah, erick])
+match5 = Match([teresa, alex])
+
+round1.add_match(match3)
+round1.add_match(match4)
+round1.add_match(match5)
+
+round1.add_match(match3)
+round1.add_match(match4)
+round1.add_match(match5)
+
+Summer_Tournament.rounds.append(round1)
+
+match3.set_winner(alice)
+match4.set_tie()
+match5.set_winner(teresa)
+
+print("Points:")
+print("alice:", Summer_Tournament.get_points(alice))
+print("bob:", Summer_Tournament.get_points(bob))
+print("sarah:", Summer_Tournament.get_points(sarah))
+print("erick:", Summer_Tournament.get_points(erick))
+print("teresa:", Summer_Tournament.get_points(teresa))
+print("alex:", Summer_Tournament.get_points(alex))
+
+
+print ("NEXT")
+
+
+print (Summer_Tournament.get_players_for_next_rounds())

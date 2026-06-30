@@ -62,11 +62,25 @@ class Tournament:
         return pairs
 
     def get_players_for_next_rounds(self):
-        sort_players = sorted(self, key=self.get_ranks, reverse=True)
-        new_matches = sort_players
-        for round_ in self.rounds:
-            round_.add_match(new_matches)
-        return new_matches
+        sort_players = sorted(self.players, key=self.get_points, reverse=True)
+        next_round_matches = []
+        num_players = len(sort_players)
+        if num_players % 2 != 0:
+            print (f"Bye awarded to: {num_players[0][0]}")
+            sort_players = sort_players[1:]
+            num_players = len(sort_players)
+
+        mid_point = num_players // 2
+        top_half = sort_players[:mid_point]
+        bottom_half = sort_players[mid_point:]
+
+        for i in range (mid_point):
+            player1 = top_half[i][0]
+            player2 = bottom_half[-(i+1)][0]
+            next_round_matches.append((player1, player2))
+        return next_round_matches
+
+
 
 #advance rounds (have round update automatically in tournament
 
