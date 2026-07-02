@@ -75,15 +75,23 @@ class Tournament:
         bottom_half = sort_players[mid_point:]
 
         for i in range (mid_point):
-            player1 = top_half[i][0]
-            player2 = bottom_half[-(i+1)][0]
+            player1 = top_half[i]
+            player2 = bottom_half[-(i+1)]
             next_round_matches.append((player1, player2))
         return next_round_matches
-
-
 
 #advance rounds (have round update automatically in tournament
 
     def advance_round(self):
         self.current_round += 1
         return current_round
+
+    def generate_next_round(self):
+        pairs = self.get_players_for_next_rounds()
+        round_number = self.current_round+1
+        round_ = Round(round_number)
+        for pair in pairs:
+            match = Match([pair[0], pair[1]])
+            round_.add_match(match)
+        self.rounds.append(round_)
+        self.current_round = round_number

@@ -63,26 +63,6 @@ for match in Summer_Tournament.rounds[0].matches:
     print(match)
 
 
-round1 = Round(0)
-
-match3 = Match([alice, bob])
-match4 = Match([sarah, erick])
-match5 = Match([teresa, alex])
-
-round1.add_match(match3)
-round1.add_match(match4)
-round1.add_match(match5)
-
-round1.add_match(match3)
-round1.add_match(match4)
-round1.add_match(match5)
-
-Summer_Tournament.rounds.append(round1)
-
-match3.set_winner(alice)
-match4.set_tie()
-match5.set_winner(teresa)
-
 print("Points:")
 print("alice:", Summer_Tournament.get_points(alice))
 print("bob:", Summer_Tournament.get_points(bob))
@@ -95,4 +75,12 @@ print("alex:", Summer_Tournament.get_points(alex))
 print ("NEXT")
 
 
-print (Summer_Tournament.get_players_for_next_rounds())
+print("Rounds before generate:", len(Summer_Tournament.rounds))
+
+Summer_Tournament.generate_next_round()
+print("round_2_matches")
+for match in Summer_Tournament.rounds[1].matches:
+    print(match)
+print (Summer_Tournament.current_round)
+
+print("Number of matches in round 2:", len(Summer_Tournament.rounds[1].matches))
